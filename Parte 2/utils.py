@@ -9,7 +9,7 @@ import tensorflow as tf
 
 class ProcessingUtils:
     @staticmethod
-    def load_dataset(self, path, classes, img_size=(224, 224), shuffle=True, verbose=True):
+    def load_dataset(path, classes, img_size=(224, 224), shuffle=True, verbose=True):
         '''Load the dataset from the given path with folder for each class'''
         X = []
         y = []
@@ -22,11 +22,11 @@ class ProcessingUtils:
                 X.append(img)
                 y.append(i)
         if shuffle:
-            X, y = self.shuffle_dataset(X, y)
+            X, y = ProcessingUtils.shuffle_dataset(X, y)
         return np.array(X), np.array(y)
 
     @staticmethod
-    def shuffle_dataset(self, X, y):
+    def shuffle_dataset(X, y):
         c = list(zip(X, y))
         random.shuffle(c)
         X, y = zip(*c)
@@ -43,7 +43,7 @@ class ProcessingUtils:
         plt.show()
 
     @staticmethod
-    def create_augmented_data_generator(self, X_train, y_train, batch_size=32):
+    def create_augmented_data_generator(X_train, y_train, batch_size=32):
         datagen = tf.keras.preprocessing.image.ImageDataGenerator(
             rotation_range=20,
             width_shift_range=0.2,
@@ -56,7 +56,7 @@ class ProcessingUtils:
         return datagen.flow(X_train, y_train, batch_size=batch_size)
 
     @staticmethod
-    def train_pipeline(self, X_train, y_train, batch_size=64):
-        datagen = self.create_augmented_data_generator(
+    def train_pipeline(X_train, y_train, batch_size=64):
+        datagen = ProcessingUtils.create_augmented_data_generator(
             X_train, y_train, batch_size=batch_size)
         return datagen
