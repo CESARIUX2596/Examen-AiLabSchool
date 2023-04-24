@@ -7,7 +7,8 @@ import pickle
 
 
 # load the data
-df = pd.read_csv('.//data//healthcare-dataset-stroke-data.csv')
+df = pd.read_csv(
+    'D:\Develop\Repos\Examen-AiLabSchool\Parte_1\data\healthcare-dataset-stroke-data.csv')
 
 # Encode categorical features
 le = LabelEncoder()
@@ -38,19 +39,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 # Save the train and test data to csv
-X_train.to_csv('../data/train.csv', index=False)
-X_test.to_csv('../data/test.csv', index=False)
-y_train.to_csv('../data/train_target.csv', index=False)
-y_test.to_csv('../data/test_target.csv', index=False)
-
-# Save the label encoder
-with open('../models/RFC/label_encoder.pkl', 'wb') as f:
-    pickle.dump(le, f)
-
-# Save the list of unique values for each feature
-with open('../models/RFC/unique_values.pkl', 'wb') as f:
-    pickle.dump([l3, l4], f)
-
-# Save the list of features
-with open('../models/RFC/features.pkl', 'wb') as f:
-    pickle.dump(X_train.columns, f)
+X_train.to_csv('train.csv', index=False)
+X_test.to_csv('test.csv', index=False)
+y_train.to_csv('train_target.csv', index=False)
+y_test.to_csv('test_target.csv', index=False)
