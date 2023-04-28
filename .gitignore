@@ -1,5 +1,7 @@
 # mlflow 
 mlruns/
+mlruns.old/
+mlruns.old2/
 
 # Traind models
 models/
