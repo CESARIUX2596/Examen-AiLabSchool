@@ -1,31 +1,47 @@
 import pickle
-
+from flask_cors import CORS, cross_origin
 from flask import Flask, request, jsonify
 import pandas as pd
-from sklearn.externals import joblib
 
 app = Flask(__name__)
+cors = CORS(app)
 
 # read the model with pickle
-filename = "./models/RFC/finalized_model.sav"
+filename = "../models/RFC/finalized_model.sav"
 RFC_model = pickle.load(open(filename, "rb"))
 
 
 # function to clean the data
 def clean_data(data):
-    # Data comes as a json, so we need to convert it to a dataframe
-    data = pd.DataFrame(data)
-    # Drop the columns that we don't need
-    data = data.drop(["id", "Unnamed: 0", "Unnamed: 0.1", "Unnamed: 0.1.1"], axis=1)
+    data = dict(data)
+    data = pd.DataFrame.from_dict(
+        [data],
+    )
+    data = data.drop(["id"], axis=1)
+    return data
 
 
 # Create the API endpoint to predict
 @app.route("/predict", methods=["POST"])
 def predict():
-    # Get the data from the POST request.
-    data = request.get_json(force=True)
-    # Make prediction using model loaded from disk as per the data.
-    prediction = RFC_model.predict(pd.DataFrame(data))
-    # Take the first value of prediction
-    output = prediction[0]
-    return jsonify(output)
+    data = request.get_json()
+    # Convert json to dict
+    data = clean_data(data)
+    # Make prediction
+    prediction = RFC_model.predict(data)
+    print(prediction)
+    # Return prediction
+    # if prediction[0] == 1:
+    #     return jsonify({"Prediction": "Stroke"})
+    # else:
+    #     return jsonify({"Prediction": "No Stroke"})
+    return jsonify({"Prediction": str(prediction[0])})
+
+
+@app.route("/ping")
+def ping():
+    return "Pong!"
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
