@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Dynamic Table from CSV File</title>
-  </head>
-  <body>
+
+<head>
+  <meta charset="utf-8">
+  <title>Dynamic Table from CSV File</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="prediction-container">
+    <form id="selected-data">
+      <!-- add input parameters for each field -->
+      <input type="text" , placeholder="ID" , id="id" , name="id"></input>
+      <input type="text" , placeholder="Gender" , id="gender" , name="gender"></input>
+      <input type="text" , placeholder="Age" , id="age" , name="age"></input>
+      <input type="text" , placeholder="Hypertension" , id="hypertension" , name="hypertension"></input>
+      <input type="text" , placeholder="Heart Disease" , id="heart_disease" , name="heart_disease"></input>
+      <input type="text" , placeholder="Ever Married" , id="ever_married" , name="ever_married"></input>
+      <input type="text" , placeholder="Work Type" , id="work_type" , name="work_type"></input>
+      <input type="text" , placeholder="Residence Type" , id="Residence_type" , name="Residence_type"></input>
+      <input type="text" , placeholder="Avg Glucose Level" , id="avg_glucose_level" , name="avg_glucose_level"></input>
+      <input type="text" , placeholder="BMI" , id="bmi" , name="bmi"></input>
+      <input type="text" , placeholder="Smoking Status" , id="smoking_status" , name="smoking_status"></input>
+      <button id="predict-button">Predict</button>
+      <label id="prediction"></label>
+    </form>
+
+  </div>
+  </br>
+  </br>
+
+
+  <div id="table-container">
+    <h1>Sample data</h1>
     <table id="myTable">
       <thead>
         <tr>
-            <th>id</th>
-            <th>gender</th>
-            <th>age</th>
-            <th>hypertension</th>
-            <th>heart_disease</th>
-            <th>ever_married</th>
-            <th>work_type</th>
-            <th>Residence_type</th>
-            <th>avg_glucose_level</th>
-            <th>bmi</th>
-            <th>smoking_status</th>
+          <th>id</th>
+          <th>gender</th>
+          <th>age</th>
+          <th>hypertension</th>
+          <th>heart_disease</th>
+          <th>ever_married</th>
+          <th>work_type</th>
+          <th>Residence_type</th>
+          <th>avg_glucose_level</th>
+          <th>bmi</th>
+          <th>smoking_status</th>
+          <th>Expected_Prediction</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
+  </div>
+  <script src="script.js"></script>
+</body>
 
-    <script>
-      const table = document.getElementById("myTable");
-      const tbody = table.getElementsByTagName("tbody")[0];
-
-      // Load the CSV file
-      fetch("data.csv")
-        .then(response => response.text())
-        .then(data => {
-          // Split the data into rows
-          const rows = data.trim().split("\n");
-
-          // Iterate over the rows and create table cells
-          for (let i = 1; i < rows.length; i++) { // start at i=1 to skip header row
-            const cells = rows[i].split(",");
-            const row = document.createElement("tr");
-
-            for (let j = 0; j < cells.length; j++) {
-              const cell = document.createElement("td");
-              const cellText = document.createTextNode(cells[j]);
-              cell.appendChild(cellText);
-              console.log(cellText);
-              row.appendChild(cell);
-            }
-
-            tbody.appendChild(row);
-          }
-        });
-    </script>
-  </body>
 </html>

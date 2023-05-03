@@ -1,8 +1,4 @@
-import sys
-import os
-import shutil
-import time
-import traceback
+import pickle
 
 from flask import Flask, request, jsonify
 import pandas as pd
@@ -10,35 +6,26 @@ from sklearn.externals import joblib
 
 app = Flask(__name__)
 
-# inputs
-training_data = '../data/healthcare-dataset-stroke-data.csv'
+# read the model with pickle
+filename = "./models/RFC/finalized_model.sav"
+RFC_model = pickle.load(open(filename, "rb"))
 
 
-model_directory = '../models/RFC/'
-model_file_name = '%s/finalized_model.sav' % model_directory
+# function to clean the data
+def clean_data(data):
+    # Data comes as a json, so we need to convert it to a dataframe
+    data = pd.DataFrame(data)
+    # Drop the columns that we don't need
+    data = data.drop(["id", "Unnamed: 0", "Unnamed: 0.1", "Unnamed: 0.1.1"], axis=1)
 
 
-@app.route('/predict', methods=['POST'])
+# Create the API endpoint to predict
+@app.route("/predict", methods=["POST"])
 def predict():
-    try:
-        # get the data
-        data = request.get_json(force=True)
-
-        # convert data into dataframe
-        data.update((x, [y]) for x, y in data.items())
-        data_df = pd.DataFrame.from_dict(data)
-
-        # load the model
-        model = joblib.load(model_file_name)
-
-        # predictions
-        result = model.predict(data_df)
-
-        # send back to browser
-        output = {'results': int(result[0])}
-
-        # return data
-        return jsonify(results=output)
-
-    except:
-        return jsonify({'trace': traceback.format_exc()})
+    # Get the data from the POST request.
+    data = request.get_json(force=True)
+    # Make prediction using model loaded from disk as per the data.
+    prediction = RFC_model.predict(pd.DataFrame(data))
+    # Take the first value of prediction
+    output = prediction[0]
+    return jsonify(output)
