@@ -1,9 +1,6 @@
 const data_url =
-	"https://raw.githubusercontent.com/CESARIUX2596/Examen-AiLabSchool/master/Parte_1/data/test.csv";
+	"https://raw.githubusercontent.com/CESARIUX2596/Examen-AiLabSchool/master/Parte_1/data/test_final.csv";
 const tbody = document.querySelector("#myTable tbody");
-
-const labels_url = 
-	"https://raw.githubusercontent.com/CESARIUX2596/Examen-AiLabSchool/master/Parte_1/data/test_target.csv";
 
 const labels = [];
 
