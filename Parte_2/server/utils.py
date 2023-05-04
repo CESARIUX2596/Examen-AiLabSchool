@@ -61,8 +61,14 @@ class ProcessingUtils:
         return X / 255.0
 
     @staticmethod
+    def resize_data(X, img_size=(224, 224)):
+        """Resize the dataset"""
+        return cv2.resize(X, img_size)
+
+    @staticmethod
     def reshape_data(X):
-        """Reshape images to be used in the model"""
+        """Resize and reshape images to be used in the model"""
+        X = ProcessingUtils.resize_data(X, (150, 150))
         return X.reshape(-1, 150, 150, 3)
 
     @staticmethod

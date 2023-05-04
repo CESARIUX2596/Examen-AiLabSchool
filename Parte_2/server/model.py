@@ -120,7 +120,6 @@ def build_model():
             Dense(6, activation="sigmoid"),
         ]
     )
-
     # Generate a sample image and pass it through the model to generate variables
     sample_image = np.random.rand(1, 150, 150, 3)
 
